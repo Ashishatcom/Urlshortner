@@ -1,0 +1,105 @@
+<% include header %>
+<% include nav %>
+<style>
+    .btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+#img-upload{
+    width: 100%;
+}
+.containerimg{
+    margin-top: 100px;
+}
+</style>
+<div class="container containerimg">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Upload Image</label>
+            <div class="input-group" >
+                <span class="input-group-btn">
+                    <form >
+                    <span class="btn btn-default btn-file">
+                        <span class="btn btn-primary btn-sm float-left">Browse…</span> <input type="file" name="image" id="imgInp">
+                    </span>
+                </form>
+                </span>
+                <input type="text" id="myInput" class="form-control" readonly>
+            </div>
+            <div id="imagetopdf">
+
+            <img id='img-upload'/>
+        </div>
+        </div>
+    <button type="button" class="btn btn-success" onclick="generatePdf()"> Save Pdf</button>
+
+    </div>
+    </div>
+    <script>
+        $(document).ready( function() {
+    	$(document).on('change', '.btn-file :file', function() {
+		var input = $(this),
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+		input.trigger('fileselect', [label]);
+		});
+
+		$('.btn-file :file').on('fileselect', function(event, label) {
+		    
+		    var input = $(this).parents('.input-group').find(':text'),
+		        log = label;
+		    
+		    if( input.length ) {
+		        input.val(log);
+		    } else {
+		        if( log ) alert(log);
+		    }
+		});
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		        
+		        reader.onload = function (e) {
+		            $('#img-upload').attr('src', e.target.result);
+		        }
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+		$("#imgInp").change(function(){
+		    readURL(this);
+        }); 
+        
+    });
+    function generatePdf(){
+    var div =  document.querySelector('#imagetopdf');
+   
+    var imgData;
+    html2canvas(div,{
+        useCORS:true,
+        onrendered:function(canvas){
+            imgData = canvas.toDataURL('image/png');
+            var doc = new jsPDF('p','pt','a4');
+            doc.addImage(imgData,'png',10,10);
+            var str = $("#myInput").val();
+            var str1 =   str.split(".")[0]
+            doc.save(`${str1}.pdf`);
+            window.open(imgData)
+        }
+    })
+}
+    </script>
