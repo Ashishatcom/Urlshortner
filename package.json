@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www"
   },
   "engines": {
-    "node": "12.16.1"
+    "node": "12.16.1"   
   },
   "dependencies": {
     "axios": "^0.19.2",
