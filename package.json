@@ -9,7 +9,7 @@
     "node": "12.16.1"   
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "compression": "^1.7.4",
     "convertapi": "^1.4.0",
     "cookie-parser": "~1.4.4",
